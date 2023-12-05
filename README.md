@@ -1,30 +1,17 @@
-# React + TypeScript + Vite
+# Manifest V3 の追加要件
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. Manifest V3 を使用する拡張機能は、拡張機能のコードに関する追加要件を満たす必要があります。具体的には、提出したコードから拡張機能の全機能を簡単に識別できるようにする必要があります。つまり、各拡張機能の動作のロジックは、自己完結型でなければなりません。拡張機能は、拡張機能の外部にあるデータやその他の情報源を参照して読み込むことができますが、これらの外部リソースにロジックを含めることはできません。
+  
+    よくある違反の例:
 
-Currently, two official plugins are available:
+   - a. 拡張機能のパッケージ内にないリソースを指す `<script>` タグを含める
+   - b. JavaScript の eval() メソッドまたはその他のメカニズムを使用して、リモートソースから取得した文字列を実行する
+   - c. リモートソースからフェッチされた複雑なコマンドを実行するためのインタープリタの構築（コマンドがデータとして取得された場合も含む）
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. 特定の目的のためにリモート サーバーと通信することは引き続き可能です。次の例をご覧ください。
+   - a. ユーザー アカウント データをリモート サーバーと同期する
+   - b. A/B テストや有効になっている機能の決定のためにリモート構成ファイルを取得する（機能に関するすべてのロジックが拡張機能パッケージに含まれている）
+   - c. ロジックの評価に使用されていないリモート リソース（画像など）の取得
+   - d. データに対するサーバーサイド オペレーションの実行（秘密鍵で暗号化する目的など）
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3. 審査プロセス中に拡張機能のすべての機能を確認できなかった場合は、送信が却下されたり、ストアから削除されたりすることがあります。
