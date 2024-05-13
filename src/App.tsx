@@ -47,10 +47,10 @@ function App() {
     chrome.scripting.executeScript({
       target: { tabId: tab.id! },
       func: () => {
-        const divElement = document.createElement("div")
-        divElement.innerHTML = "拡張機能実行中"
-        divElement.style.cssText = "background: white; color:red; font-size: large; padding: 3rem;"
-        document.body.before(divElement)
+        // const divElement = document.createElement("div")
+        // divElement.innerHTML = "拡張機能実行中"
+        // divElement.style.cssText = "background: white; color:red; font-size: large; padding: 3rem;"
+        // document.body.before(divElement)
 
         document.addEventListener("selectionchange", () => {
           let str = window.getSelection()?.toString()
